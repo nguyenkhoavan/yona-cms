@@ -107,7 +107,7 @@ class AclPlugin extends Plugin
 
     private function responseError($di, $params)
     {
-        die(var_dump($params));
+
     }
 
 }

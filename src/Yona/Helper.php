@@ -3,7 +3,7 @@
 /**
  * @author Oleksandr Torosh <webtorua@gmail.com>
  */
-namespace Yona\Application;
+namespace Yona;
 
 use Phalcon\Mvc\User\Component;
 

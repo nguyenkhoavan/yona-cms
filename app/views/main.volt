@@ -5,13 +5,11 @@
     <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-    <title>{{ helper.title().get()|escape }}</title>
+    {{ get_title() }}
 
     {{ helper.meta().get('description') }}
     {{ helper.meta().get('keywords') }}
     {{ helper.meta().get('seo-manager') }}
-
-    {#<meta name="fb:app_id" content="1725798137648732">#}
 
     {{ helper.meta().get('og:title') }}
     {{ helper.meta().get('og:url') }}

@@ -182,7 +182,8 @@ return [
     'router' => '\Yona\Router',
 
     // Application Helpers
-    'helper'        => '\Yona\Application\Helper',
+    'helper'        => '\Yona\Helper',
+    'cacheManager' => '\Yona\Cache\Manager',
 
     // Custom services
 

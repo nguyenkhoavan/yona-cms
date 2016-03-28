@@ -31,7 +31,8 @@
   "license": "BSD-3",
   "autoload": {
     "psr-4": {
-      "Yona\\": "src/Yona/"
+      "Yona\\": "src/Yona/",
+      "Application\\": "app/modules/Application/"
     }
   },
   "require": {
