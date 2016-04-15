@@ -3,12 +3,32 @@
 namespace Publication\Model;
 
 use Application\Mvc\Model\Model;
+use Carbon\Carbon;
 use Phalcon\Mvc\Model\Validator\Uniqueness;
 use Phalcon\Mvc\Model\Validator\PresenceOf;
 use Application\Localization\Transliterator;
+use Phalcon\Mvc\Model\Behavior\Timestampable;
+use Publication\Model\Translate\PublicationTranslate;
 
 class Publication extends Model
 {
+    private $id;
+    private $type_id;
+    private $slug;
+    private $created_at;
+    private $updated_at;
+    private $date;
+    private $cover_photo; // translate
+    private $preview_src; // translate
+    private $preview_inner; // translate
+
+    protected $title;
+    protected $text;
+    protected $meta_title;
+    protected $meta_description;
+    protected $meta_keywords;
+
+
 
     public function getSource()
     {
@@ -19,36 +39,30 @@ class Publication extends Model
 
     public function initialize()
     {
+        $this->addBehavior(
+            new Timestampable(
+                array(
+                    'beforeValidationOnCreate' => array(
+                        'field' => ['created_at', 'updated_at'],
+                        'generator' => function () {
+                            return Carbon::now()->timestamp;
+                        }
+                    ),
+                    'beforeUpdate' => array(
+                        'field' => 'updated_at',
+                        'generator' => function () {
+                            return Carbon::now()->timestamp;
+                        }
+                    ),
+                )
+            )
+        );
+
         $this->hasMany('id', $this->translateModel, 'foreign_id'); // translate
 
         $this->belongsTo('type_id', 'Publication\Model\Type', 'id', [
             'alias' => 'type'
         ]);
-    }
-
-    private $id;
-    private $type_id;
-    private $slug;
-    private $created_at;
-    private $updated_at;
-    private $date;
-    private $preview_src;
-    private $preview_inner;
-
-    protected $title;
-    protected $text;
-    protected $meta_title;
-    protected $meta_description;
-    protected $meta_keywords;
-
-    public function beforeCreate()
-    {
-        $this->created_at = date("Y-m-d H:i:s");
-    }
-
-    public function beforeUpdate()
-    {
-        $this->updated_at = date("Y-m-d H:i:s");
     }
 
     public function afterUpdate()
@@ -58,6 +72,10 @@ class Publication extends Model
         $cache = $this->getDi()->get('cache');
 
         $cache->delete(self::cacheSlugKey($this->getSlug()));
+    }
+
+    public function beforeSave(){
+        $this->setDate(strtotime($this->date));
     }
 
     public function validation()
@@ -158,12 +176,12 @@ class Publication extends Model
 
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->setMLVariable('slug', $slug);
     }
 
     public function getSlug()
     {
-        return $this->slug;
+        return $this->getMLVariable('slug');
     }
 
     public function setText($text)
@@ -201,15 +219,16 @@ class Publication extends Model
         $this->date = $date;
     }
 
-    public function getDate($format = 'Y-m-d H:i:s')
+    public function getDate($format=null)
     {
         if ($format) {
+            $format =  $this->getDi()->get('helper')->getDateFormat();
             if ($this->date) {
-                return date($format, strtotime($this->date));
+                return date($format, $this->date);
             }
-        } else {
-            return $this->date;
         }
+
+        return $this->date;
     }
 
     public function setType_id($type_id)
@@ -242,24 +261,48 @@ class Publication extends Model
         }
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCover_Photo()
+    {
+        return $this->getMLVariable('cover_photo');
+    }
+
+    /**
+     * @param mixed $cover_photo
+     */
+    public function setCover_Photo($cover_photo)
+    {
+        $this->setMLVariable('cover_photo', $cover_photo);
+    }
+
     public function setPreviewInner($preview_inner)
     {
-        $this->preview_inner = $preview_inner;
+        $this->setMLVariable('preview_inner', $preview_inner);
     }
 
-    public function getPreviewInner()
+    public function getPreview_Inner()
     {
-        return $this->preview_inner;
+        return $this->getMLVariable('preview_inner');
     }
 
-    public function getPreviewSrc()
+    public function getPreview_Src()
     {
-        return $this->preview_src;
+        return $this->getMLVariable('preview_src');
     }
 
-    public function setPreviewSrc($preview_src)
+    public function setPreview_Src($preview_src)
     {
-        $this->preview_src = $preview_src;
+        $this->setMLVariable('preview_src', $preview_src);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThumbnailPhoto()
+    {
+        return $this->getPreviewSrc();
     }
 
 }

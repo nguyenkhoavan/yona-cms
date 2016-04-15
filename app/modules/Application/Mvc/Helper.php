@@ -25,7 +25,7 @@ class Helper extends \Phalcon\Mvc\User\Component
     }
 
     /**
-     * Мультиязычный перевод строки по сайту/пользовательской_части
+     * Dịch đa ngôn ngữ
      */
     public function translate($string, $placeholders = null)
     {
@@ -37,7 +37,7 @@ class Helper extends \Phalcon\Mvc\User\Component
     }
 
     /**
-     * Мультиязычный перевод строки по админке
+     * Dịch đa ngôn ngữ ở  phần quản trị
      */
     public function at($string, $placeholders = null)
     {
@@ -127,7 +127,7 @@ class Helper extends \Phalcon\Mvc\User\Component
         return \Application\Mvc\Helper\ActiveMenu::getInstance();
     }
 
-    public function announce($incomeString, $num)
+    public function announce($incomeString, $num=150)
     {
         $object = new \Application\Mvc\Helper\Announce();
         return $object->getString($incomeString, $num);
@@ -175,6 +175,20 @@ class Helper extends \Phalcon\Mvc\User\Component
         $view->setPartialsDir($partialsDir);
 
         return $view->partial($template, $data);
+    }
+
+    public function getLoggedUser()
+    {
+        $session = $this->getDi()->get('session');
+        $auth = $session->get('auth');
+        if ($auth) {
+            return $auth;
+        }
+    }
+
+    public function getDateFormat($lang='vi'){
+        $config =  $this->getDI()->get('config');
+        return $config['date_format'][$lang];
     }
 
 }

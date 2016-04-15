@@ -2,3 +2,5 @@
 composer.lock
 bower_components
 .vagrant/
+/migrations/migrations-db.php
+/app/config/environment/development.php

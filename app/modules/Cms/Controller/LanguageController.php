@@ -63,6 +63,8 @@ class LanguageController extends Controller
     {
         $form = new LanguageForm();
         $model = Language::findFirst($id);
+        $this->view->model = $model;
+        $this->view->form = $form;
 
         if ($this->request->isPost()) {
             $form->bind($this->request->getPost(), $model);
@@ -83,8 +85,6 @@ class LanguageController extends Controller
             $form->setEntity($model);
         }
 
-        $this->view->model = $model;
-        $this->view->form = $form;
 
         $this->view->title = 'Editing language';
         $this->helper->title($this->view->title);

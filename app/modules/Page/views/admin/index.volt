@@ -1,31 +1,25 @@
 <!--controls-->
-<div class="ui segment">
-
-    <a href="{{ url.get() }}page/admin/add" class="ui button positive">
-        <i class="icon plus"></i> Add New
+<div class="well well-sm">
+    <a href="{{ url.get() }}page/admin/add" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Add New
     </a>
-
 </div>
 <!--/end controls-->
 
-<table class="ui table very compact celled">
-    <thead>
-    <tr>
-        <th style="width: 100px"></th>
-        <th>Title</th>
-        <th>Url</th>
-    </tr>
-    </thead>
-    <tbody>
-    {% for item in entries %}
-        {% set link = url.get() ~ "page/admin/edit/" ~ item.getId() %}
+<div class="table-responsive">
+    <table class="table table-hover table-bordered table-striped" data-widget="tree-grid">
+        <thead>
         <tr>
-            <td><a href="{{ link }}?lang={{ constant('LANG') }}" class="mini ui icon button"><i class="icon edit"></i>
-                    id = {{ item.getId() }}</a></td>
-            <td><a href="{{ link }}?lang={{ constant('LANG') }}">{{ item.getTitle() }}</a></td>
-            {% set url = helper.langUrl(['for':'page', 'slug':item.getSlug()]) %}
-            <td><a href="{{ url }}" target="_blank">{{ url }}</a></td>
+            <th>Title</th>
+            <th>Cover</th>
+            <th>Thumbnail</th>
+            <th width="400">Short Content</th>
+            <th>Url</th>
+            <th></th>
         </tr>
-    {% endfor %}
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+        {{ helper.modulePartial('admin/_partials/grid', ['entries': entries], 'page') }}
+        </tbody>
+    </table>
+</div>

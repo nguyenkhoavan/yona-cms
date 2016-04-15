@@ -1,14 +1,14 @@
 <!--controls-->
-<div class="ui segment">
+<div class="well well-sm">
 
-    <a href="{{ url.get() }}cms/language/add" class="ui button positive">
-        <i class="icon plus"></i> Add New
+    <a href="{{ url.get() }}cms/language/add" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Add New
     </a>
 
 </div>
 <!--/end controls-->
 
-<table class="ui table very compact celled">
+<table class="table table-hover table-bordered table-striped very compact celled">
     <thead>
     <tr>
         <th>Name</th>
@@ -32,7 +32,7 @@
             {% if item.getUrl() and not item.getPrimary() %}{% set url = url.get() ~ item.getUrl() ~ '/' %}{% endif %}
             <td><a href="{{ url }}" target="_blank">{{ url }}</a></td>
             <td>{{ item.getSortorder() }}</td>
-            <td>{% if item.getPrimary() %}<i class="icon plus"></i>{% endif %}</td>
+            <td>{% if item.getPrimary() %}<i class="fa fa-plus"></i>{% endif %}</td>
         </tr>
     {% endfor %}
     </tbody>

@@ -11,7 +11,7 @@
 
     <section class="date">{{ publication.getDate('d.m.Y') }}</section>
 
-    {% if publication.preview_inner %}
+    {% if publication.getPreview_Inner() %}
         {% set image = helper.image([
         'id': publication.getId(),
         'type': 'publication',

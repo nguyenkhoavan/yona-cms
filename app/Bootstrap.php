@@ -76,14 +76,22 @@ class Bootstrap
 
         // Flash helper
         $flash = new \Phalcon\Flash\Session([
-            'error'   => 'ui red inverted segment',
-            'success' => 'ui green inverted segment',
-            'notice'  => 'ui blue inverted segment',
-            'warning' => 'ui orange inverted segment',
+            'error'   => 'alert alert-danger',
+            'success' => 'alert alert-success',
+            'notice'  => 'alert alert-info',
+            'warning' => 'alert alert-warning',
         ]);
         $di->set('flash', $flash);
 
         $di->set('helper', new \Application\Mvc\Helper());
+
+
+        /**
+         * Custom DI
+         */
+        $di->set('email', function () {
+            return new \Application\Mvc\EmailHelper();
+        });
 
         // Routing
         $this->initRouting($application, $di);
@@ -116,16 +124,41 @@ class Bootstrap
     private function initAssetsManager($di)
     {
         $config = $di->get('config');
+        $join = APPLICATION_ENV == "production";
+        $locator = $join? ROOT.'/':'/';
+        $jsMin = $join? new \Phalcon\Assets\Filters\Jsmin():new \Phalcon\Assets\Filters\None();
+        $cssMin = $join? new \Phalcon\Assets\Filters\Cssmin(): new \Phalcon\Assets\Filters\None();
+
         $assetsManager = new \Application\Assets\Manager();
-        $js_collection = $assetsManager->collection('js')
-            ->setLocal(true)
-            ->addFilter(new \Phalcon\Assets\Filters\Jsmin())
-            ->setTargetPath(ROOT . '/assets/js.js')
-            ->setTargetUri('assets/js.js')
-            ->join(true);
+        if ($join) {
+            $js_collection = $assetsManager->collection('js')
+                ->setLocal(true)
+                ->addFilter($jsMin)
+                ->setTargetPath(ROOT . '/assets/main.js')
+                ->setTargetUri('assets/main.js')
+                ->join($join);
+        }else{
+            $js_collection = $assetsManager->collection('js')->setLocal($join);
+        }
         if ($config->assets->js) {
             foreach ($config->assets->js as $js) {
-                $js_collection->addJs(ROOT . '/' . $js);
+                $js_collection->addJs($locator . $js);
+            }
+        }
+
+        if ($join) {
+            $css_collection = $assetsManager->collection('css')
+                ->setLocal($join)
+                ->addFilter($cssMin)
+                ->setTargetPath(ROOT . '/assets/main.min.css')
+                ->setTargetUri('/assets/main.min.css')
+                ->join($join);
+        }else{
+            $css_collection = $assetsManager->collection('css')->setLocal($join);
+        }
+        if ($config->assets->css) {
+            foreach ($config->assets->css as $css) {
+                $css_collection->addCss($locator.$css);
             }
         }
 
@@ -147,6 +180,37 @@ class Bootstrap
             ->addCss(APPLICATION_PATH . '/modules/Admin/assets/admin.less');
 
         $di->set('assets', $assetsManager);
+        if($join){
+            $admin_js_collection = $assetsManager->collection('admin_js')
+                ->setLocal(true)
+                ->addFilter($jsMin)
+                ->setTargetPath(ROOT . '/assets/admin.min.js')
+                ->setTargetUri('assets/admin.min.js')
+                ->join($join);
+        }else{
+            $admin_js_collection = $assetsManager->collection('admin_js')->join($join);
+        }
+        if ($config->assets->admin_js) {
+            foreach ($config->assets->admin_js as $js) {
+                $admin_js_collection->addJs($locator . $js);
+            }
+        }
+
+        if ($join) {
+            $admin_css_collection = $assetsManager->collection('admin_css')
+                ->setLocal($join)
+                ->addFilter($cssMin)
+                ->setTargetPath(ROOT . '/assets/admin.min.css')
+                ->setTargetUri('/assets/admin.min.css')
+                ->join($join);
+        }else{
+            $admin_css_collection = $assetsManager->collection('admin_css')->setLocal($join);
+        }
+        if ($config->assets->admin_css) {
+            foreach ($config->assets->admin_css as $css) {
+                $admin_css_collection->addCss($locator.$css);
+            }
+        }
     }
 
     private function initEventManager($di)

@@ -2,51 +2,69 @@
 <html>
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <title>{{ helper.title().get()|escape }}</title>
+    <link href="{{ url.path() }}favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
 
     {{ helper.meta().get('description') }}
     {{ helper.meta().get('keywords') }}
     {{ helper.meta().get('seo-manager') }}
 
-    <link href="{{ url.path() }}favicon.ico" rel="shortcut icon" type="image/vnd.microsoft.icon">
+    {#<meta name="fb:app_id" content="1725798137648732">#}
 
-    <!--css reset-->
-    <link href="{{ url.path() }}vendor/css/reset.min.css" rel="stylesheet" type="text/css">
-    <!--css reset -->
+    {{ helper.meta().get('og:title') }}
+    {{ helper.meta().get('og:url') }}
+    {{ helper.meta().get('og:type') }}
+    {{ helper.meta().get('og:description') }}
+    {{ helper.meta().get('og:image') }}
 
-    <!--css lib-->
-    <link href="{{ url.path() }}vendor/font-awesome-4.2.0/css/font-awesome.min.css" rel="stylesheet"
-          type="text/css">
-    <!--/css lib-->
 
-    <!--less-->
-    <link href="{{ url.path() }}static/less/style.less" rel="stylesheet/less" type="text/css">
-    <link href="{{ url.path() }}static/less/mobile.less" rel="stylesheet/less" type="text/css">
-    <script src="{{ url.path() }}vendor/js/less-1.7.3.min.js" type="text/javascript"></script>
-    <!--/less-->
+    {{ stylesheet_link('/vendor/font-awesome-4.2.0/css/font-awesome.min.css') }}
+    <!-- page css assets -->
+    {{ assets.outputCss() }}
+    <!-- /end page css assets -->
 
-    <script src="{{ url.path() }}vendor/js/jquery-1.11.0.min.js"></script>
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
-    <script src="{{ url.path() }}static/vendor/js/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+
     <![endif]-->
 
-    <!--js-->
-    {{ assets.outputJs('js') }}
-    <!--/js-->
+    <script>
+        var ENVIRONMENT = "{{ constant('APPLICATION_ENV') }}";
+        var LANG = "{{ constant('LANG') }}";
+        var DATE_FORMAT = {vi: 'D/M/YYYY', en: 'M/D/YYYY'}; // Using in momentjs
+    </script>
 
     {{ helper.javascript('head') }}
 
 </head>
-<body{% if view.bodyClass %} class="{{ view.bodyClass }}"{% endif %}>
 
-<div id="wrapper">
-    {{ content() }}
-</div>
+<body class="{{ bodyClass|default('home') }}">
+
+{{content()}}
+
+{{ helper.javascript('body') }}
+
+<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- page js assets -->
+{{ assets.outputJs() }}
+<!-- /end page js assets -->
+
+{% set datepickerLanguageFileName =  '/bower_components/bootstrap-datepicker/js/locales/bootstrap-datepicker.' ~ constant('LANG') ~'.js'%}
+{{ javascript_include(datepickerLanguageFileName) }}
+{% set momentLanguageFileName =  '/bower_components/moment/locale/' ~ constant('LANG') ~'.js'%}
+{{ javascript_include(momentLanguageFileName) }}
+
+
+{{ javascript_include('static/js/main.js') }}
 
 </body>
 </html>

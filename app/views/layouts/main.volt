@@ -1,31 +1,24 @@
-<div class="wrapper-in">
+<header class="head-section">
+  {{ partial('main/header') }}
+</header>
 
-    <header>
-        {{ partial('main/header') }}
-    </header>
-
-    {{ partial('main/menu') }}
-
-    <div id="main">
-
-        {{ content() }}
-
-        {% if seo_text is defined and seo_text_inner is not defined %}
-            <div class="seo-text">
-                {{ seo_text }}
-            </div>
-        {% endif %}
-
-    </div>
-
-    <footer>
-        {{ partial('main/footer') }}
-    </footer>
-
+<div class="main-menu">
+  {{ partial('main/menu') }}
 </div>
 
-{% if registry.cms['PROFILER'] %}
-    {{ helper.dbProfiler() }}
+<!-- main content -->
+{{ content() }}
+<!-- end of content -->
+
+{% if seo_text is defined and seo_text_inner is not defined %}
+<div class="container seo" style="display:none">
+  {{ seo_text }}
+</div>
 {% endif %}
 
-{{ helper.javascript('body') }}
+{{ partial('main/footer') }}
+
+
+{#{% if registry.cms['PROFILER'] %}#}
+{#{{ helper.dbProfiler() }}#}
+{#{% endif %}#}

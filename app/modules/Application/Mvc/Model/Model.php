@@ -7,24 +7,27 @@
  */
 namespace Application\Mvc\Model;
 
+use Cms\Model\Language;
+
 class Model extends \Phalcon\Mvc\Model
 {
     const CACHE_LIFETIME = 300;
 
-    protected $translations_array = []; // Массив переводов
+    protected $translations_array = []; // Translation array
 
     public $translations = [];
     public $fields = [];
 
-    public static $lang = 'en'; // Язык по-умолчанию
-    public static $custom_lang = ''; // Используется для создания карты сайта
-    private static $translateCache = true; // Флаг использования кеша переводов
+    public static $lang = 'vi'; // Language default
+    public static $custom_lang = ''; // Used to create a sitemap
+    private static $translateCache = false; // Translation cache usage flag
 
     /**
-     * Translate. Для реализации мультиязычной схемы, необходимо скопировать в вашу модель следующие методы:
+     * Translate. In order to implement a multilingual scheme, you need to copy your model of the following methods:
      * Start Copy:
      */
     protected $translateModel; // translate // Название связанного класса с переводами, например = 'Page\Model\Translate\PageTranslate'
+
 
     public function initialize()
     {
@@ -33,26 +36,26 @@ class Model extends \Phalcon\Mvc\Model
     //End Copy
 
     /**
-     * Метод вызывается после извлечения всех полей в модели
+     * This method is invoked after removal of all the fields in the Model
      */
     public function afterFetch()
     {
         if ($this->translateModel && defined('LANG')) {
-            // Если есть массив переводов и установлена константа активного языка или другого языка
+            // If there is an array of translation and is set constant active language or other language
             if(self::$custom_lang){
                 self::setLang(self::$custom_lang);
             } else {
-                self::setLang(LANG); // Устанавливаем текущий язык
+                self::setLang(LANG); // Set the current language
             }
 
-            $this->initTranslationsArray(); // Извлекаем переводы со связанной таблицы переводов
+            $this->initTranslationsArray(); // Extract translated from the associated translation table
             $this->initTranslations();
         }
     }
 
     /**
-     * Очищение кеша переводов
-     * Метод вызывается после обновления значений в модели
+     * Cleansing translation cache
+     * The method is called after updating values in the model
      */
     public function afterUpdate()
     {
@@ -60,7 +63,7 @@ class Model extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Установка языка
+     * Setting the language
      */
     public static function setLang($lang)
     {
@@ -68,7 +71,7 @@ class Model extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Установка другого языка  для карты сайта
+     * Installing another language sitemap
      */
     public static function setCustomLang($lang)
     {
@@ -93,10 +96,23 @@ class Model extends \Phalcon\Mvc\Model
      */
     public function getMLVariable($key)
     {
+        $r = [];
         if (array_key_exists($key, $this->translations)) {
-            return $this->translations[$key];
+            $r = $this->translations[$key];
         }
 
+        if(!$r){
+            $defaultLang = Language::findFirstByPrimary(1);
+            $this->setLang($defaultLang->getIso());
+            $this->initTranslationsArray();
+            $this->initTranslations();
+            if (array_key_exists($key, $this->translations)) {
+                $r = $this->translations[$key];
+            } else {
+                $r = false;
+            }
+        }
+        return $r;
     }
 
     public function setMLVariable($key, $value, $lang = null)
@@ -147,7 +163,7 @@ class Model extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Извлечение массива переводов
+     * Removing the transfer array
      */
     private function initTranslationsArray()
     {
@@ -181,6 +197,13 @@ class Model extends \Phalcon\Mvc\Model
                 $this->translations[$translation->getKey()] = $translation->getValue();
             }
         }
+    }
+
+    public function getImgFolder($attr=null){
+        if($attr){
+            return $this->getSource(). '_'.$attr;
+        }
+        return $this->getSource();
     }
 
 }

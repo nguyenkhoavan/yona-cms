@@ -15,6 +15,23 @@ class LangSwitcher extends Component
     public function render($lang, $string)
     {
         $router = $this->getDI()->get('router');
+//        echo "<pre>";
+//        print_r('Namespace: '.$router->getNamespaceName());
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r('getModuleName: '.$router->getModuleName());
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r('getControllerName: '.$router->getControllerName());
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r('getActionName: '.$router->getActionName());
+//        echo "</pre>";
+//        echo "<pre>";
+//        print_r('RgetParams: ');
+//        print_r($router->getParams());
+//        echo "</pre>";
+//        exit;
         $view = $this->getDI()->get('view');
         $url = $this->getDI()->get('url');
         $requestQuery = new RequestQuery();
@@ -48,11 +65,13 @@ class LangSwitcher extends Component
         }
 
         if ($lang == LANG) {
-            $html = '<span>' . $string . '</span>';
+//            $html = '<span>' . $string . '</span>';
+            $html = '';
         } elseif ($view->disabledLang == $lang) {
-            $html = '<span class="disabled">' . $string . '</span>';
+//            $html = '<span class="disabled">' . $string . '</span>';
+            $html = '';
         } else {
-            $html = '<a href="' . $href . '">' . $string . '</a>';
+            $html = '<a class="btn btn-language" href="' . $href . '">' . $string . '</a>';
         }
 
         return $html;

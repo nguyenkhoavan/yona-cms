@@ -10,6 +10,7 @@ namespace Application\Form;
 
 use Phalcon\Forms\Element\Hidden;
 use Phalcon\Forms\Element\Check;
+use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\File;
 use Application\Form\Element\Image;
 
@@ -27,24 +28,24 @@ abstract class Form extends \Phalcon\Forms\Form
         $this->helper = $this->getDI()->get('helper');
 
         $element = $this->get($name);
+        $element->setAttribute('class', $element->getAttribute('class'). ' form-control input-md');
+
         $messages = $this->getMessagesFor($element->getName());
 
-        $html = '';
+        $err_html = '';
         if (count($messages)) {
-            $html .= '<div class="ui error message">';
-            $html .= '<div class="header">' . $this->helper->translate('Ошибка валидации формы') . '</div>';
             foreach ($messages as $message) {
-                $html .= '<p>' . $message . '</p>';
+                $err_html .= '<span class="help-block">' . $message . '</span>';
             }
-            $html .= '</div>';
         }
 
+        $html = '';
         if ($element instanceof Hidden) {
             echo $element;
         } else {
             switch (true) {
                 case $element instanceof Check:
-                    $html .= '<div class="field checkbox">';
+                    $html .= '<div class="form-group">';
                     $html .= '<div class="ui toggle checkbox">';
                     $html .= $element;
                     if ($element->getLabel()) {
@@ -68,9 +69,14 @@ abstract class Form extends \Phalcon\Forms\Form
                     break;
 
                 default:
-                    $html .= '<div class="field">';
+                    if($err_html){
+                        $html .= '<div class="form-group has-error">';
+                    }else{
+                        $html .= '<div class="form-group">';
+                    }
                     $html .= $this->makeLabel($element);
                     $html .= $element;
+                    $html .= $err_html;
                     $html .= '</div>';
             }
         }
@@ -78,6 +84,8 @@ abstract class Form extends \Phalcon\Forms\Form
         return $html;
 
     }
+
+
 
     public function renderAll()
     {
@@ -110,15 +118,9 @@ abstract class Form extends \Phalcon\Forms\Form
         if ($element->getLabel()) {
             $html .= '<label>' . $element->getLabel() . '</label>';
         }
-        if ($element->getValue()) {
-            $html .= '<section onclick="selectText(this);">' . $element->getValue() . '</section>';
-        } else {
-            $html .= '<br>';
-        }
-
+        $html .= '<br>';
         $html .= '<div class="fileinput fileinput-new" data-provides="fileinput">
-                            <div class="fileinput-preview thumbnail" data-trigger="fileinput"
-                                 style="width: 200px; min-height: 100px">';
+                    <div class="fileinput-preview thumbnail" data-trigger="fileinput" style="width: 200px; min-height: 100px">';
 
         if ($element->getValue()) {
             $url = $this->getDI()->get('url');
@@ -141,4 +143,18 @@ abstract class Form extends \Phalcon\Forms\Form
         return $html;
     }
 
+    public function camelize($name) {
+        $stringParts = explode('_', $name);
+        $stringParts = array_map('ucfirst', $stringParts);
+        $name = implode('_', $stringParts);
+        return $name;
+    }
+
+    public function getCustomValue($name, $entity, $data)
+    {
+        $method = 'get' . $this->camelize($name);
+        if (method_exists($entity, $method) ) {
+            return $entity->$method();
+        }
+    }
 }

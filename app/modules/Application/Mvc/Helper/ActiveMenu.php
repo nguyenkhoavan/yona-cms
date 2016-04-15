@@ -41,9 +41,17 @@ class ActiveMenu extends \Phalcon\Mvc\User\Component
 
     public function activeClass($value)
     {
+        if(is_array($value)){
+            foreach ($value as $val) {
+                if ($this->isActive($val)) {
+                    return ' active';
+                }
+            }
+        }
         if ($this->isActive($value)) {
             return ' active';
         }
+        return null;
     }
 
 }

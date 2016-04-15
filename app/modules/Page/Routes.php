@@ -15,6 +15,12 @@ class Routes
 
     public function init(DefaultRouter $router)
     {
+        $router->add('/admin/generate-slug', array(
+            'module'        => 'page',
+            'controller'    => 'admin',
+            'action'        => 'generateSlug'
+        ))->setName('generate-slug');
+
         $router->addML('/{slug:[a-zA-Z0-9_-]+}.html', array(
             'module' => 'page',
             'controller' => 'index',
@@ -26,6 +32,37 @@ class Routes
             'controller' => 'index',
             'action' => 'contacts',
         ), 'contacts');
+
+        // Admin
+        $router->add('/admin/page/parents-dropdown/{id:(\d+)}', array(
+            'module'     => 'page',
+            'controller' => 'admin',
+            'action'     => 'pageParent',
+        ))->setName('parents-dropdown');
+
+        $router->add('/admin/page/{id:(\d+)}/edit', array(
+            'module'     => 'page',
+            'controller' => 'admin',
+            'action'     => 'edit',
+        ))->setName('edit-page');
+
+        $router->add('/admin/page/{id:(\d+)}/delete', array(
+            'module'     => 'page',
+            'controller' => 'admin',
+            'action'     => 'delete',
+        ))->setName('delete-page');
+
+        $router->add('/page/admin/layout/{name:[a-zA-Z0-9_-]+}', array(
+            'module'        => 'page',
+            'controller'    => 'template',
+            'action'        => 'index'
+        ))->setName('page-layout');
+
+        $router->add('/page/admin/generateSlug', array(
+            'module'        => 'page',
+            'controller'    => 'admin',
+            'action'        => 'generateSlug'
+        ))->setName('page-generate-slug');
 
         return $router;
 

@@ -17,15 +17,17 @@ class Page extends Model
 
     protected $translateModel = 'Page\Model\Translate\PageTranslate'; // translate
 
-    public $id;
-    public $slug;
-    public $title; // translate
-    public $text; // translate
-    public $meta_title; // translate
-    public $meta_description; // translate
-    public $meta_keywords; // translate
-    public $created_at;
-    public $updated_at;
+    private $id;
+    private $slug;
+    private $title; // translate
+    private $cover_photo; // translate
+    private $thumbnail_photo; // translate
+    private $text; // translate
+    private $meta_title; // translate
+    private $meta_description; // translate
+    private $meta_keywords; // translate
+    private $created_at;
+    private $updated_at;
 
     public function initialize()
     {
@@ -215,5 +217,35 @@ class Page extends Model
     {
         return $this->updated_at;
     }
+    /**
+     * @return mixed
+     */
+    public function getCover_Photo()
+    {
+        return $this->getMLVariable('cover_photo');
+    }
 
+    /**
+     * @param mixed $cover_photo
+     */
+    public function setCover_Photo($cover_photo)
+    {
+        $this->setMLVariable('cover_photo', $cover_photo);
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getThumbnail_Photo()
+    {
+        return $this->getMLVariable('thumbnail_photo');
+    }
+
+    /**
+     * @param mixed $thumbnail_photo
+     */
+    public function setThumbnail_Photo($thumbnail_photo)
+    {
+        $this->setMLVariable('thumbnail_photo', $thumbnail_photo);
+    }
 }

@@ -11,6 +11,7 @@ namespace Page\Controller;
 use Application\Mvc\Controller;
 use Page\Model\Page;
 use Page\Form\PageForm;
+use Application\Localization\Transliterator;
 
 class AdminController extends Controller
 {
@@ -42,6 +43,7 @@ class AdminController extends Controller
                 if ($model->create()) {
                     $form->bind($post, $model);
                     $model->updateFields($post);
+                    $this->uploadImage($model);
                     if ($model->update()) {
                         $this->flash->success($this->helper->at('Page created'));
                         return $this->redirect($this->url->get() . 'page/admin/edit/' . $model->getId() . '?lang=' . LANG);
@@ -78,6 +80,7 @@ class AdminController extends Controller
             if ($form->isValid()) {
                 $model->updateFields($post);
                 if ($model->save()) {
+                    $this->uploadImage($model);
                     $this->flash->success($this->helper->at('Updated has been successful'));
 
                     // Очищаем кеш страницы
@@ -119,4 +122,14 @@ class AdminController extends Controller
         $this->helper->title($this->helper->at('Delete Page'), true);
     }
 
-} 
+    public function generateSlugAction() {
+        if ($this->request->isPost()) {
+            $post           = $this->request->getPost();
+            $tmp            = [];
+            $newSlug        = Transliterator::slugify(trim($post['title']));
+            $tmp['slug']    = $newSlug;
+
+            $this->returnJSON($tmp);
+        }
+    }
+}

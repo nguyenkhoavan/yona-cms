@@ -8,6 +8,7 @@
 
 namespace Page\Form;
 
+use Application\Form\Element\Image;
 use Application\Form\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
@@ -17,7 +18,7 @@ class PageForm extends Form
 
     public function initialize()
     {
-        $title = new Text('title', array('required' => true));
+        $title = new Text('title', array('required' => true, 'data-url' => $this->url->get(['for' => 'generate-slug'])));
         $title->setLabel('Title');
         $this->add($title);
 
@@ -40,6 +41,13 @@ class PageForm extends Form
         $meta_keywords = new TextArea('meta_keywords');
         $meta_keywords->setLabel('meta-keywords');
         $this->add($meta_keywords);
-    }
 
-} 
+        $coverPhoto = new Image('cover_photo');
+        $coverPhoto->setLabel('Cover Image');
+        $this->add($coverPhoto);
+
+        $thumbnailPhoto = new Image('thumbnail_photo');
+        $thumbnailPhoto->setLabel('Thumbnail');
+        $this->add($thumbnailPhoto);
+    }
+}

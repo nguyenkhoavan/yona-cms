@@ -1,79 +1,50 @@
-<form method="post" class="ui form" action="" enctype="multipart/form-data">
+<form method="post" class="form" action="" enctype="multipart/form-data" novalidate>
 
     <!--controls-->
-    <div class="ui segment">
-
-        <a href="{{ url.get() }}publication/admin/{{ type }}?lang={{ constant('LANG') }}" class="ui button">
-            <i class="icon left arrow"></i> {{ helper.at('Back') }}
-        </a>
-
-        <div class="ui positive submit button">
-            <i class="save icon"></i> {{ helper.at('Save') }}
-        </div>
-
-        {% if model.getId() %}
-
-            <a href="{{ url.get() }}publication/admin/delete/{{ model.getId() }}?lang={{ constant('LANG') }}" class="ui button red">
-                <i class="icon trash"></i> {{ helper.at('Delete') }}
-            </a>
-
-            {% if model.getId() %}
-                <a class="ui blue button" target="_blank"
-                   href="{{ helper.langUrl(['for':'publication','type':model.getTypeSlug(), 'slug':model.getSlug()]) }}">
-                    {{ helper.at('View Online') }}
-                </a>
-            {% endif %}
-
-        {% endif %}
-
-    </div>
+    {{ helper.modulePartial('admin/_partials/formactions', ['model': model], 'publication') }}
     <!--end controls-->
 
-    <div class="ui segment">
-        <div class="ui grid">
-            <div class="twelve wide column">
-                {{ form.renderDecorated('title') }}
-                {{ form.renderDecorated('slug') }}
-                {{ form.renderDecorated('meta_title') }}
-                {{ form.renderDecorated('meta_description') }}
-                {{ form.renderDecorated('meta_keywords') }}
-                {{ form.renderDecorated('text') }}
-            </div>
-            <div class="four wide column">
-                {{ form.renderDecorated('type_id') }}
-                {{ form.renderDecorated('date') }}
-                {{ form.renderDecorated('preview_src') }}
-                {{ form.renderDecorated('preview_inner') }}
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-sm-8 col-xs-12">
+                    {{ form.renderDecorated('title') }}
+                    {{ form.renderDecorated('slug') }}
+                    <div class="row">
+                        <div class="col-sm-6 col-xs-12">
+                            {{ form.renderDecorated('cover_photo') }}
+                        </div>
+                        <div class="col-sm-6 col-xs-12">
+                            {{ form.renderDecorated('preview_src') }}
+                            {{ form.renderDecorated('preview_inner') }}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4 col-xs-12">
+                    {{ form.renderDecorated('date') }}
+                </div>
+                <div class="col-xs-12">
+                    {{ form.renderDecorated('short_description') }}
+                </div>
+                <div class="col-xs-12">
+                    {{ form.renderDecorated('text') }}
+                </div>
+                <div class="col-sm-8 col-xs-12">
+                    {{ form.renderDecorated('meta_title') }}
+                    {{ form.renderDecorated('meta_description') }}
+                    {{ form.renderDecorated('meta_keywords') }}
+                </div>
+
+
             </div>
         </div>
     </div>
 
+    <!--controls-->
+    {{ helper.modulePartial('admin/_partials/formactions', ['model': model], 'publication') }}
+    <!--end controls-->
 </form>
 
-<!--ui semantic-->
-<script>
-    $( ".ui.form" ).form({
-        fields: {
-            title: {
-                identifier: 'title',
-                rules: [
-                    {type: 'empty'}
-                ]
-            }
-        }
-    });
-</script><!--/end ui semantic-->
-
-<link rel="stylesheet" href="{{ url.path() }}vendor/bootstrap/datetimepicker/bootstrap-datetimepicker.min.css">
-<script src="{{ url.path() }}vendor/bootstrap/datetimepicker/moment.js"></script>
-<script src="{{ url.path() }}vendor/bootstrap/datetimepicker/bootstrap-datetimepicker.min.js"></script>
-<script>
-    $('#date').datetimepicker({
-        locale: 'en',
-        format: 'YYYY-MM-DD HH:mm:ss',
-        showClose: true
-    });
-</script>
 
 <script type="text/javascript" src="{{ url.get() }}vendor/tiny_mce_3/tiny_mce.js"></script>
 <script type="text/javascript">

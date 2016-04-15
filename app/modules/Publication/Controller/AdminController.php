@@ -3,8 +3,8 @@
 namespace Publication\Controller;
 
 use Application\Mvc\Controller;
-use Publication\Model\Publication;
 use Publication\Form\PublicationForm;
+use Publication\Model\Publication;
 use Publication\Model\Type;
 
 class AdminController extends Controller
@@ -27,9 +27,12 @@ class AdminController extends Controller
         $cond_array = [];
         if ($type) {
             $typeEntity = Type::getCachedBySlug($type);
-            $type_id = $typeEntity->getId();
-            $cond_array[] = "type_id = $type_id";
+        }else{
+            $typeEntity = Type::findFirst();
+            $type = $typeEntity->getSlug();
         }
+        $type_id = $typeEntity->getId();
+        $cond_array[] = "type_id = $type_id";
 
         $conditions = implode(' AND ', $cond_array);
 
@@ -45,9 +48,9 @@ class AdminController extends Controller
         ]);
         $this->view->paginate = $paginator->getPaginate();
 
-        $this->view->types = $types;
-        $this->view->type = $type;
-        $this->view->type_id = $type_id;
+        $this->view->types      = $types;
+        $this->view->type       = $type;
+        $this->view->type_id    = $type_id;
 
         $this->helper->title($this->helper->at('Manage Publications'), true);
     }
@@ -73,9 +76,10 @@ class AdminController extends Controller
                 if ($model->create()) {
                     $form->bind($post, $model);
                     $model->updateFields($post);
+                    $this->uploadImage($model);
                     if ($model->update()) {
                         $this->flash->success($this->helper->at('Publication created'));
-                        return $this->redirect($this->url->get() . 'publication/admin/edit/' . $model->getId() . '?lang=' . LANG);
+                        return $this->redirect($this->url->get(['for' => 'edit-publication', 'id'=>$model->getId()]) . '?lang=' . LANG);
                     } else {
                         $this->flashErrors($model);
                     }
@@ -87,8 +91,8 @@ class AdminController extends Controller
             }
         }
 
-        $this->view->model = $model;
-        $this->view->form = $form;
+        $this->view->model  = $model;
+        $this->view->form   = $form;
 
         $this->helper->title($this->helper->at('Create a publication'), true);
 
@@ -113,7 +117,7 @@ class AdminController extends Controller
                     $this->uploadImage($model);
                     $this->flash->success($this->helper->at('Publication edited'));
 
-                    return $this->redirect($this->url->get() . 'publication/admin/edit/' . $model->getId() . '?lang=' . LANG);
+                    return $this->redirect($this->url->get(['for' => 'edit-publication', 'id'=>$model->getId(), 'type'=>$model->getTypeSlug()]) . '?lang=' . LANG);
                 } else {
                     $this->flashErrors($model);
                 }
@@ -136,9 +140,10 @@ class AdminController extends Controller
         if ($this->request->isPost()) {
             $model->delete();
             if ($model->getType_id()) {
-                $this->redirect($this->url->get() . 'publication/admin/' . $model->getType()->getSlug());
+                return $this->redirect($this->url->get(['for' => 'publications_admin', 'type'=>$model->getType()->getSlug()]));
+
             } else {
-                $this->redirect($this->url->get() . 'publication/admin');
+                $this->redirect($this->url->get(['for' => 'publications_admin_all']));
             }
         }
 
@@ -146,43 +151,13 @@ class AdminController extends Controller
         $this->helper->title($this->helper->at('Unpublishing'), true);
     }
 
-    private function uploadImage($model)
-    {
+    public function generateSlugAction() {
         if ($this->request->isPost()) {
-            if ($this->request->hasFiles() == true) {
-                foreach ($this->request->getUploadedFiles() as $file) {
-                    if (!$file->getTempName()) {
-                        return;
-                    }
-                    if (!in_array($file->getType(), [
-                        'image/bmp',
-                        'image/jpeg',
-                        'image/png',
-                    ])
-                    ) {
-                        return $this->flash->error($this->helper->at('Only allow image formats jpg, jpeg, png, bmp'));
-                    }
-
-                    $imageFilter = new \Image\Storage([
-                        'id'   => $model->getId(),
-                        'type' => 'publication',
-                    ]);
-                    $imageFilter->removeCached();
-
-                    $resize_x = 1000;
-                    $image = new \Phalcon\Image\Adapter\GD($file->getTempName());
-                    if ($image->getWidth() > $resize_x) {
-                        $image->resize($resize_x);
-                    }
-                    $image->save($imageFilter->originalAbsPath());
-
-                    $model->setPreviewSrc($imageFilter->originalRelPath());
-                    $model->update();
-
-                    $this->flash->success($this->helper->at('Photo added'));
-                }
-            }
+            $post           = $this->request->getPost();
+            $tmp            = [];
+            $newSlug        = Transliterator::slugify($post['title']);
+            $tmp['slug']    = $newSlug;
+            $this->returnJSON($tmp);
         }
     }
-
-} 
+}

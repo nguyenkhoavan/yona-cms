@@ -1,20 +1,20 @@
 <form method="post" class="ui form" action="" enctype="multipart/form-data">
 
     <!--controls-->
-    <div class="ui segment">
+    <div class="well well-sm">
 
-        <a href="{{ url.get() }}cms/language" class="ui button">
-            <i class="icon left arrow"></i> Back
+        <a href="{{ url.get() }}cms/language" class="btn btn-info">
+            <i class="fa fa-arrow-left"></i> Back
         </a>
 
-        <div class="ui positive submit button">
-            <i class="save icon"></i> Save
-        </div>
+        <button type="submit" class="btn btn-primary">
+            <i class="fa fa-floppy-o"></i> {{ helper.at('Save') }}
+        </button>
 
         {% if model.getId() %}
 
             <a href="{{ url.get() }}cms/language/delete/{{ model.getId() }}" class="ui button red">
-                <i class="icon trash"></i> Delete
+                <i class="fa fa-trash"></i> Delete
             </a>
 
         {% endif %}
@@ -22,7 +22,7 @@
     </div>
     <!--end controls-->
 
-    <div class="ui segment">
+    <div class="well well-sm">
         {{ form.renderDecorated('iso') }}
         {{ form.renderDecorated('locale') }}
         {{ form.renderDecorated('name') }}
