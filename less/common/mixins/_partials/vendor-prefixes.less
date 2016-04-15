@@ -1,0 +1,15 @@
+.transform(@transform){
+  -webkit-transform: @transform;
+  -moz-transform: @transform;
+  -ms-transform: @transform;
+  -o-transform: @transform;
+  transform: @transform;
+}
+
+
+.rotateZ(@degrees) {
+  -webkit-transform: rotateZ(@degrees);
+  -ms-transform: rotateZ(@degrees); // IE9 only
+  -o-transform: rotateZ(@degrees);
+  transform: rotateZ(@degrees);
+}

@@ -1,0 +1,21 @@
+.container-fluid{
+  @gutter: 250px;
+  .container-fixed(@gutter);
+  max-width: 1440 + @gutter;
+  @media screen and (max-width: @screen-md-max){
+    .container-fixed(@grid-gutter-width);
+  }
+}
+
+
+p {
+  margin: 0 0 (@line-height-computed);
+}
+
+.mash{
+  .mash();
+}
+
+.underline{
+  .underline();
+}

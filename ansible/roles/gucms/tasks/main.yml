@@ -1,0 +1,34 @@
+---
+# tasks file for gucms
+- name: set writeable permission for Phalcon app
+  file: path={{ project_root }}/public/assets mode=0777
+  file: path={{ project_root }}/public/img mode=0777
+  file: path={{ project_root }}/data/cache mode=0777
+- name: add +x for composer
+  shell: chmod +x /usr/local/bin/composer
+- name: run composer update
+  shell: composer update
+  args:
+      chdir: "{{ project_root }}"
+  ignore_errors: True
+- name: Install Bower and Grunt
+  npm: name={{ item }} state=present global=yes
+  with_items:
+  - bower
+  - grunt-cli
+- name: run Bower install
+  shell: bower install --allow-root
+  args:
+    chdir: "{{project_root}}"
+  ignore_errors: True
+
+- name: Import action aid sql file
+  shell: mysql -h{{DB_HOST}} -u{{DB_USER}} -p{{DB_PASS}} {{DB_NAME}} < migrations/sql/initDB.sql && touch {{ project_root }}/migrations/.base-sql-imported
+  args:
+    creates: "{{ project_root }}/migrations/.base-sql-imported"
+    chdir: "{{ project_root }}"
+- name: run migrations
+  shell: DB_HOST={{DB_HOST}} DB_USER={{DB_USER}} DB_PASS={{DB_PASS}} DB_NAME={{DB_NAME}} doctrine-migrations migrations:migrate --no-interaction
+  args:
+    chdir: "{{ project_root }}/migrations"
+  ignore_errors: True

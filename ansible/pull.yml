@@ -1,0 +1,43 @@
+---
+- hosts: demo
+  sudo: yes
+  vars:
+    # Apache Virtual hosts
+    apache_vhosts:
+      - {
+        servername: "demo.wumbo.com",
+        documentroot: "/var/www/wbo/web",
+        env_vars: [
+          { name: "DB_HOST", value: "localhost" },
+          { name: "DB_NAME", value: "wbo" },
+          { name: "DB_USER", value: "root" },
+          { name: "DB_PASS", value: "vagrant" }
+        ]
+      }
+    # other apt packages go here
+    #apache_packages:
+    # MySQL databases and users
+    mysql_databases:
+      - { name: wbadmin, collation: utf8_general_ci, encoding: utf8 }
+    mysql_users:
+      - { name: root, host: localhost, password: vagrant, priv: "*.*:ALL" }
+
+    project_root: /var/www/wbo
+    composer_path: /usr/local/bin/composer
+  #vars_files:
+  #  - ~/.ansible/vars/gucms/development.yml
+  roles:
+    - geerlingguy.composer
+    - doctrine-migration
+  tasks:
+    - name: Update new code
+      git: repo=git@bitbucket.org:wprja/prj_wumbo_admin.git dest="{{ project_root }}"
+      sudo: false
+    - name: Migrate database
+      shell: ./run_migration.sh
+      args:
+          chdir: "{{ project_root }}/migrations"
+    - name: Update composer
+      shell: composer update
+      args:
+          chdir: "{{ project_root }}"          

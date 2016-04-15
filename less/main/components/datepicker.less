@@ -1,0 +1,47 @@
+body.home{
+  .datepicker {
+    table thead th{
+      &.datepicker-switch{
+        font-size: 20px;
+        color: #000;
+        padding-bottom: 10px;
+        padding-right: 0;
+        padding-left: 0;
+        border-bottom: 1px solid #ebebeb;
+        text-transform: uppercase;
+        font-family: 'Noticia Text', serif;
+        font-weight: 400;
+      }
+      &.prev,
+      &.next{
+        color: #bebebe;
+        font-size: 20px;
+      }
+
+      &.dow{
+        color: #797979;
+        padding-top: @grid-gutter-width/3;
+        padding-bottom: @grid-gutter-width/3;
+      }
+    }
+    &-inline{
+      background-color: #fafafa;
+      border-radius: 0;
+      tr td.day > div.day{
+        .square(30px);
+        font-size: 12px;
+        //padding: 4px;
+        //font-size: 12px;
+      }
+    }
+
+    .datepicker-days{
+      table tr td.day {
+        padding: 0;
+        &.has-event {
+          color: @link-color;
+        }
+      }
+    }
+  }
+}

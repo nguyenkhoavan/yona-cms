@@ -1,0 +1,15 @@
+---
+# tasks file for doctrine-migration
+- name: check if doctrine-migration is exisiting
+  stat: path=/usr/local/bin/doctrine-migrations
+  register: stat_results
+
+- name: download doctrine-migration phar
+  command: wget https://github.com/doctrine/migrations/releases/download/v1.0.0/doctrine-migrations.phar -O /usr/local/share/doctrine-migrations.phar
+  args:
+    creates: /usr/local/share/doctrine-migrations.phar
+  when: stat_results.stat.exists == False
+
+- name: copy executable file to /usr/local/bin
+  copy: src=doctrine-migrations dest=/usr/local/bin/doctrine-migrations mode=0655
+  when: stat_results.stat.exists == False

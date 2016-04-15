@@ -1,0 +1,30 @@
+{
+  "name": "ciss",
+  "authors": [
+    "Van Nguyen <nguyenkhoavan@outlook.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "switchery": "0.8.1",
+    "moment": "https://github.com/nguyenkhoavan/moment.git#2.11.0",
+    "eonasdan-bootstrap-datetimepicker": "4.17.37",
+    "bootstrap-datepicker": "https://github.com/nguyenkhoavan/bootstrap-datepicker.git#ciss",
+    "bootstrap-datepicker-theme": "https://github.com/nguyenkhoavan/select2-bootstrap-theme.git#ciss",
+    "bxslider-4": "https://github.com/nguyenkhoavan/bxslider-4.git#ciss",
+    "jquery-slimscroll": "https://github.com/nguyenkhoavan/jQuery-slimScroll.git#ciss",
+    "select2": "https://github.com/nguyenkhoavan/select2.git#ciss",
+    "icheck": "https://github.com/nguyenkhoavan/icheck.git#1.x",
+    "magnific-popup": "https://github.com/nguyenkhoavan/Magnific-Popup.git#ciss"
+  }
+}

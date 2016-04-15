@@ -1,0 +1,70 @@
+span.mash{
+  .mash(rgba(0, 0, 0, 0.5));
+}
+
+// Optional captions
+// -----------------------------
+// Hidden by default for smaller viewports
+.carousel-caption {
+  position: absolute;
+  left: 0;
+  z-index: 10;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  color: @carousel-caption-color;
+  text-align: left;
+  text-shadow: @carousel-text-shadow;
+  bottom: 30px;
+  @media screen and (min-width: @screen-sm-min) {
+    bottom: 70px;
+  }
+  & .btn {
+    text-shadow: none; // No shadow for button elements in carousel-caption
+  }
+
+  h1{
+    @font-size-cover-h1: 40px;
+    @line-height-cover-h1: 1.2;
+
+    font-size: @font-size-cover-h1;
+    line-height: @line-height-cover-h1;
+    color: #fff;
+    max-height: floor((@font-size-cover-h1 * @line-height-cover-h1)) * 2;
+    @media screen and (max-width: @screen-sm-max){
+      max-height: floor((@font-size-cover-h1 * 1px));
+    }
+    overflow: hidden;
+  }
+  p.content{
+    height: @line-height-computed * 3;
+    overflow: hidden;
+  }
+  div.tags{
+    .clearfix();
+    color: #fff;
+    >span, >ul{
+      float: left;
+    }
+    >span{
+      margin-right: 10px;
+    }
+    a{
+      color: #fff;
+      text-decoration: underline;
+    }
+  }
+}
+
+.carousel-control{
+  // Toggles
+  .icon-prev,
+  .icon-next,
+  .fa-chevron-left,
+  .fa-chevron-right {
+    position: absolute;
+    top: 50%;
+    margin-top: -10px;
+    z-index: 5;
+    display: inline-block;
+  }
+}

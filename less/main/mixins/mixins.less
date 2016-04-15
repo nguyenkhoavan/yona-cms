@@ -1,0 +1,101 @@
+// Local Common Mixins
+@import "../../common/mixins/mixins";
+
+// Button Sizes
+// --------------------------------------------------
+
+.btn-lg() {
+  // line-height: ensure even-numbered height of button next to large input
+  .button-size(@padding-large-vertical; @padding-large-horizontal; @font-size-large; @line-height-large; @btn-border-radius-large);
+}
+.btn-sm() {
+  // line-height: ensure proper height of button next to small input
+  .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
+}
+.btn-xs() {
+  .button-size(@padding-xs-vertical; @padding-xs-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
+}
+.btn-block(){
+  width: 100%;
+  display: block;
+}
+
+
+// Local Main Mixins
+.mash(@bg: rgba(0, 0, 0, 0.3)){
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: @bg;
+}
+
+.mash-gradient(){
+  #gradient > .vertical(rgba(255, 255, 255, 0); rgba(0, 0, 0, 0.6); 0%;  40%);
+}
+
+@underline-default-margin: 20px 0;
+.underline(@color: @brand-primary, @margin: @underline-default-margin){
+  &:after, &::after{
+    content: '';
+    .size(50px, 0);
+    margin: @margin;
+    display: block;
+    border-width: 3px 0 0 0;
+    border-color: @color transparent transparent transparent;
+    border-style: solid none none none;
+  }
+}
+
+.border-radius(@radius: @border-radius-base){
+  .border-top-radius(@radius);
+  .border-bottom-radius(@radius);
+}
+
+// Mixin for generating new styles
+.btn-styles(@btn-color: #555) {
+  background-image: none;
+  background-color: @btn-color;
+  border-color: darken(@btn-color, 14%);
+  .box-shadow(none);
+  text-shadow: none;
+
+  &:hover,
+  &:focus  {
+    background-image: none;
+    background-color: darken(@btn-color, 12%);
+  }
+
+  &:active,
+  &.active {
+    background-image: none;
+    background-color: darken(@btn-color, 12%);
+    border-color: darken(@btn-color, 14%);
+  }
+
+  &.disabled,
+  &[disabled],
+  fieldset[disabled] & {
+    &,
+    &:hover,
+    &:focus,
+    &.focus,
+    &:active,
+    &.active {
+      background-image: none;
+      background-color: darken(@btn-color, 12%);
+    }
+  }
+}
+
+// Common styles
+.btn {
+  font-family: "NoticiaText-Regular";
+  // Remove the gradient for the pressed/active state
+  &:active,
+  &.active {
+    background-image: none;
+  }
+}

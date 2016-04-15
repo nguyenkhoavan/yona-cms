@@ -1,0 +1,44 @@
+---
+- hosts: demo
+  sudo: yes
+  vars:
+    # Apache Virtual hosts
+    apache_vhosts:
+      - {
+        servername: "demo.wumbo.com",
+        documentroot: "/var/www/wbo/web",
+        env_vars: [
+          { name: "DB_HOST", value: "localhost" },
+          { name: "DB_NAME", value: "wbo" },
+          { name: "DB_USER", value: "root" },
+          { name: "DB_PASS", value: "vagrant" }
+        ]
+      }
+    # other apt packages go here
+    #apache_packages:
+    # MySQL databases and users
+    mysql_databases:
+      - { name: wbadmin, collation: utf8_general_ci, encoding: utf8 }
+    mysql_users:
+      - { name: root, host: localhost, password: vagrant, priv: "*.*:ALL" }
+
+    project_root: /var/www/wbo
+    composer_path: /usr/local/bin/composer
+  #vars_files:
+  #  - ~/.ansible/vars/gucms/development.yml
+  roles:
+    - geerlingguy.apache
+    - geerlingguy.php
+    - geerlingguy.php-xdebug
+    - sarrubia.phalcon
+    - geerlingguy.composer
+    - geerlingguy.mysql
+    - doctrine-migration
+    - geerlingguy.nodejs
+    - { role: gucms, DB_HOST: localhost, DB_USER: "{{mysql_users[0].name}}", DB_PASS: "{{mysql_users[0].password}}", DB_NAME: "{{mysql_databases[0].name}}" }
+  tasks:
+    - name: Download adminer.php from Sourceforge
+      shell: wget http://sourceforge.net/projects/adminer/files/Adminer/Adminer%204.2.1/adminer-4.2.1.php/download -O /var/www/html/adminer.php
+      args:
+          chdir: /var/www/html
+          creates: adminer.php

@@ -1,0 +1,124 @@
+div.articles{
+
+  article{
+    .article-content{
+    }
+  }
+
+  /** ---------------------------------------------------- */
+
+  /* ------ This section is for Introduction Page ------------ */
+  article{
+    &#chung_toi_la_ai{
+      div.content{
+        @media screen and (min-width: @screen-sm-min){
+          padding-right: @grid-gutter-width * 1.5;
+        }
+      }
+    }
+
+    /** ---------------------------------------------------- */
+
+    &#doi_tuong_huong_loi{
+      color: #fff;
+      .mash{
+        .mash(rgba(0, 0, 0, .6));
+        @media screen and (min-width: @screen-lg-min){
+          right: 50%;
+        }
+
+        @media screen and (max-width: @screen-md-max){
+          .mash(rgba(0, 0, 0, 0.2));
+        }
+      }
+
+      .article-content{
+        color: inherit;
+        @media screen and (min-width: @screen-sm-min){
+          padding: @grid-gutter-width;
+        }
+
+        .h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6{
+          color: inherit;
+          @media screen and (min-width: @screen-lg-min){
+            margin-top: @grid-gutter-width * 2;
+          }
+        }
+
+        div.content{
+          @media screen and (max-width: @screen-sm-max) and (min-width: @screen-sm-min){
+            padding-right: @grid-gutter-width * 1.5;
+            -webkit-column-count: 2; /* Chrome, Safari, Opera */
+            -moz-column-count: 2; /* Firefox */
+            column-count: 2;
+          }
+        }
+      }
+    }
+
+    /** ---------------------------------------------------- */
+
+    &#doi_tac{
+      table.table{
+        td{
+          font-family: "Noticia Text", Serif;
+          font-weight: 700;
+          a{
+            color: @text-color;
+            font-size: @font-size-base;
+            font-family: Helvetica;
+            font-weight: 400;
+          }
+          strong{
+            font-family: "Noticia Text", Serif;
+            font-weight: 700;
+            color: @brand-primary;
+          }
+        }
+      }
+    }
+
+    /** ---------------------------------------------------- */
+
+  }
+
+  /* ----------- This section is for Where we work page ------------*/
+  article#where_we_work{
+    margin: 0;
+    margin-bottom: -@grid-gutter-width;
+    .map{
+      width: 35%;
+      display: block;
+      position: absolute;
+      left: 0;
+      @media screen and (max-width: @screen-sm-max){
+        width: 100%;
+      }
+      svg{
+        g{
+          path{
+            fill: transparent;
+            pointer-events:all;
+            stroke-width: 1;
+            //stroke: @brand-primary;
+            &:hover{
+              fill: @brand-primary;
+            }
+          }
+          &:hover,
+          &.active{
+            path{
+              fill: @brand-primary;
+            }
+          }
+        }
+      }
+    }
+
+    .article-content{
+      @media screen and (max-width: @screen-sm-max){
+        width: 100%;
+      }
+    }
+  }
+}

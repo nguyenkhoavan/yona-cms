@@ -1,0 +1,358 @@
+@header-color: #fff;
+
+body.home{
+  section{
+    margin: @grid-gutter-width*2 0;
+    span.section-inner{
+      background-color: #fff;
+      .size(100%, 100%);
+      display: block;
+    }
+  }
+
+  div.region-caption{
+    .btn-styles(@link-color);
+    .btn-sm();
+    .border-top-radius(0);
+    .border-bottom-radius(0);
+    font-family: @headings-font-family;
+    display: table;
+    color: #fff;
+    font-size: @font-size-h3;
+    font-weight: 700;
+    padding-left: @grid-gutter-width;
+    padding-right: @grid-gutter-width;
+    &:hover{
+      background-color: @link-color;
+    }
+    @media screen and (max-width: @screen-xs-max){
+      display: block;
+      width: 100%;
+    }
+  }
+}
+
+.thumbnail{
+  color: #fff;
+  margin-bottom: 0;
+  .title{
+    color: @header-color;
+  }
+
+  .caption{
+    color: #fff;
+    h3{
+      @line-height: floor((@font-size-h3 * @line-height-base));
+      height: (2 * @line-height);
+      line-height: @line-height;
+      overflow: hidden;
+      span{
+        color: #ccc;
+        display: block;
+        font-size: 13px;
+      }
+    }
+  }
+
+  &.img-background{
+    position: relative;
+    padding: 0;
+    img{
+      position: relative;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 1;
+    }
+    .caption{
+      z-index: 2;
+      position: absolute;
+      width: 100%;
+      bottom: 0;
+      .mash-gradient();
+    }
+  }
+}
+
+section#about_us{
+  text-align: left;
+}
+
+section#highlighted_post{
+  .clearfix();
+
+  #events{
+    @event-list-magrin-base: @grid-gutter-width/2;
+
+    .clearfix();
+    padding: @grid-gutter-width;
+    padding-top: 0;
+    display: block;
+    >#events_header {
+      color: @link-color;
+      padding-bottom: @event-list-magrin-base;
+      border-bottom: 1px solid #f3f3f3;
+      font-weight: normal;
+      >span{
+        text-transform: uppercase;
+      }
+      >a{
+        font-size: @font-size-h4;
+        line-height: @font-size-h3;
+      }
+    }
+
+    #list_events{
+      >ul{
+        padding: 0;
+        padding-left: @event-list-magrin-base;
+        margin-top: @event-list-magrin-base;
+        margin-bottom: 0;
+        li{
+          font-size: 16px;
+          color: #000000;
+          margin: @event-list-magrin-base - 5;
+          a{
+            color: inherit;
+          }
+          &:last-child{
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+
+  @media screen and (min-width: @screen-md-min){
+    [class*="col-"]{
+      padding: 0;
+      &:first-child{
+        padding-left: @grid-gutter-width/2;
+      }
+      &:last-child{
+        padding-right: @grid-gutter-width/2;
+      }
+    }
+  }
+
+  @media screen and (min-width: @screen-md-min){
+    .big-thumbnail{
+      .caption{
+        padding-left: @grid-gutter-width * 2;
+        padding-right: @grid-gutter-width * 2;
+      }
+    }
+  }
+
+  .thumbnail{
+    .caption{
+      p.content{
+        max-height: 200px;
+        overflow: hidden;
+      }
+      @media screen and (max-width: @screen-sm-max){
+        p.content{
+          max-height: @font-size-base +  @line-height-computed * 2 + 5;
+          overflow: hidden;
+        }
+        .title{
+          font-size: @font-size-h3;
+        }
+        >.btn{
+          /* Foce the button view more to size sm */
+          .button-size(@padding-small-vertical; @padding-small-horizontal; @font-size-small; @line-height-small; @btn-border-radius-small);
+        }
+      }
+    }
+  }
+
+  .homepage-event{
+    .datepicker.datepicker-inline{
+      width: 100%;
+      padding: @grid-gutter-width/3 @grid-gutter-width/2 0 @grid-gutter-width/2;
+
+      .datepicker-days,
+      .datepicker-months,
+      .datepicker-years,
+      .datepicker-decades,
+      .datepicker-centuries{
+        >table{
+          width: 100%;
+          tbody{
+            padding: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+section#upcoming_events{
+  background-color: #ebebeb;
+  padding: @grid-gutter-width @grid-gutter-width*2;
+  text-align: center;
+  h1{
+    text-align: center;
+  }
+}
+
+section#lasted_news{
+  @media screen and (min-width: @screen-md-min){
+    .lastnews-container{
+      margin-left: @grid-gutter-width/2;
+      margin-right: @grid-gutter-width/2;
+    }
+    [class*="col-"]{
+      padding: 0;
+    }
+  }
+
+  .last-news-heading{
+    .clearfix();
+
+    .view-more a{
+      font-size: @font-size-base;
+      padding: 21px 0;
+      cursor: pointer;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+
+  .thumbnail{
+    text-align: left;
+    border: none;
+    .box-shadow(none);
+    padding: 0;
+    .caption{
+      padding: @grid-gutter-width/2 @grid-gutter-width*1.5 @grid-gutter-width @grid-gutter-width*1.5;
+      >h3{
+        margin-top: 0;
+      }
+      span.content{
+        height: @line-height-computed * 3;
+        overflow: hidden;
+        display: block;
+        margin-bottom: @grid-gutter-width/2;
+        color: @text-color;
+      }
+    }
+  }
+}
+
+section#other_campaign{
+  .last-news-heading{
+    .clearfix();
+
+    .view-more a{
+      font-size: @font-size-base;
+      padding: 21px 0;
+      cursor: pointer;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+  }
+
+  @media screen and (min-width: @screen-md-min){
+    [class*="col-"]{
+      padding: 0;
+      &:first-child{
+        padding-left: @grid-gutter-width/2;
+      }
+      &:last-child{
+        padding-right: @grid-gutter-width/2;
+      }
+    }
+  }
+
+  @media screen and (min-width: @screen-md-min){
+    .big-thumbnail{
+      .caption{
+        padding-left: @grid-gutter-width * 2;
+        padding-right: @grid-gutter-width * 2;
+      }
+    }
+  }
+
+  .thumbnail{
+    margin-bottom: 0;
+    padding: 0;
+    background-color: @brand-primary;
+    .border-radius(0);
+    .caption{
+      background-color: transparent;
+      color: #fff;
+      .title{
+        color: #fff;
+        line-height: @line-height-base;
+        height: floor(@font-size-h3 * @line-height-base) * 2;
+        overflow: hidden;
+      }
+    }
+
+    &.horizontal{
+      .caption{
+        position: relative;
+        .title{
+          margin-top: 10px;
+          height: floor((@font-size-h3 * @line-height-base)) * 2;
+          overflow: hidden;
+          @media screen and (min-width: @screen-md-min) and (max-width: (1280px - 1)){
+            height: floor((@font-size-h3 * @line-height-base));
+          }
+        }
+        .content{
+          height: @line-height-computed * 2;
+          overflow: hidden;
+        }
+      }
+
+      // Show/hide caret depend screen size: Just show caret on lg screen
+      @media screen and (min-width: @screen-sm-min) {
+        .caption, img{
+          float: left;
+          width: 50%;
+        }
+
+        @caret-width: 10px;
+        &:not(.img-position-inverted){
+          .caption{
+            &:before{
+              content: '';
+              .square(0px);
+              border-width: @caret-width;
+              border-color: transparent @link-color transparent transparent;
+              border-style: solid;
+              display: block;
+              position: absolute;
+              left: -@caret-width*2 + 1;
+              top: ~"calc(50% - 10px)";
+            }
+          }
+        }
+
+        &.img-position-inverted{
+          .caption, img{
+            float: right;
+          }
+          .caption{
+            &:after{
+              content: '';
+              .square(0px);
+              border-width: @caret-width;
+              border-color: transparent transparent transparent @link-color;
+              border-style: solid;
+              display: block;
+              position: absolute;
+              right: -@caret-width*2 + 1;
+              top: ~"calc(50% - 10px)";
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,96 @@
+
+@brand-primary:         #32b1b8; // #337ab7
+@brand-success:         #12465c;
+@brand-info:            #5bc0de;
+@brand-warning:         #f0ad4e;
+@brand-danger:          #ea6666;
+
+
+//** Background color for `<body>`.
+@body-bg:               #e4eef1;
+//** Global text color on `<body>`.
+@text-color:            #333333;
+
+//== Tables
+//
+//## Customizes the `.table` component with basic values, each used across all table variations.
+
+//** Padding for `<th>`s and `<td>`s.
+@table-cell-padding:            8px;
+//** Padding for cells in `.table-condensed`.
+@table-condensed-cell-padding:  5px;
+
+//** Default background color used for all tables.
+@table-bg:                      darken(@body-bg, 5%);
+//** Background color used for `.table-striped`.
+@table-bg-accent:               darken(@table-bg, 6%);
+//** Background color used for `.table-hover`.
+@table-bg-hover:                darken(@table-bg, 10%);
+@table-bg-active:               @table-bg-hover;
+
+//** Border color for table and cell borders.
+@table-border-color:            @brand-primary;
+
+
+//== Forms
+//
+//##
+
+//** `<input>` background color
+@input-bg:                       rgba(255, 255, 255, 0.2);
+//** `<input disabled>` background color
+@input-bg-disabled:              @gray-lighter;
+
+//** Text color for `<input>`s
+@input-color:                    @gray;
+//** `<input>` border color
+@input-border:                   darken(@body-bg, 20%);
+
+// TODO: Rename `@input-border-radius` to `@input-border-radius-base` in v4
+//** Default `.form-control` border radius
+// This has no effect on `<select>`s in some browsers, due to the limited stylability of `<select>`s in CSS.
+@input-border-radius:            @border-radius-base;
+//** Large `.form-control` border radius
+@input-border-radius-large:      @border-radius-large;
+//** Small `.form-control` border radius
+@input-border-radius-small:      @border-radius-small;
+
+//** Border color for inputs on focus
+@input-border-focus:             darken(@input-border, 20%);
+
+//** Placeholder text color
+@input-color-placeholder:        #8c9ca2;
+
+//** Default `.form-control` height
+@input-height-base:              (@line-height-computed + (@padding-base-vertical * 2) + 2);
+//** Large `.form-control` height
+@input-height-large:             (ceil(@font-size-large * @line-height-large) + (@padding-large-vertical * 2) + 2);
+//** Small `.form-control` height
+@input-height-small:             (floor(@font-size-small * @line-height-small) + (@padding-small-vertical * 2) + 2);
+
+//** `.form-group` margin
+@form-group-margin-bottom:       15px;
+
+@legend-color:                   @gray-dark;
+@legend-border-color:            #e5e5e5;
+
+//** Background color for textual input addons
+@input-group-addon-bg:           @input-bg;
+//** Border color for textual input addons
+@input-group-addon-border-color: @input-border;
+
+//** Disabled cursor for form controls and buttons.
+@cursor-disabled:                not-allowed;
+
+
+
+
+@hr-border:   #a7b5bb;
+
+
+
+
+
+
+@layout-left-col-width: 15%;
+@layout-left-col-sm-width: 20%;

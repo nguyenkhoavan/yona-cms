@@ -1,0 +1,2 @@
+#!/bin/sh
+php /usr/local/share/doctrine-migrations.phar "$@"

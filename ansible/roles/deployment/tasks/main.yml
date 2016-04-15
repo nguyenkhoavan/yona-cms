@@ -1,0 +1,50 @@
+---
+- name: install Bower
+  command: npm install -g bower
+
+- name: Copy deployment key
+  copy:
+   src: "soha"
+   dest: "{{bitbucket_keyfile}}" 
+   owner: vagrant
+   group: vagrant
+   mode: 0400
+  sudo: no 
+
+- name: Pull code
+  git: repo="{{source}}" dest="{{project_root}}" force=yes version=master update=yes key_file="{{bitbucket_keyfile}}" accept_hostkey=yes
+- name: change group to www-data
+  file: path={{project_root}} group=www-data owner=www-data recurse=yes
+- name: set writeable permission for Phalcon app
+  file: path={{ project_root }}/cache mode=0777 recurse=yes
+  file: path={{ project_root }}/public/assets mode=0777 recurse=yes
+  file: path={{ project_root }}/public/img mode=0777 recurse=yes
+  file: path={{ project_root }}/data/cache mode=0777 recurse=yes
+
+- name: add +x for composer
+  shell: chmod +x /usr/local/bin/composer
+- name: run composer update
+  shell: composer update
+  args:
+      chdir: "{{ project_root }}"
+  ignore_errors: True
+
+
+- name: run Bower install
+
+  shell: /usr/local/nodejs/default/bin/bower install --allow-root
+  args:
+    chdir: "{{project_root}}"
+  sudo: no 
+
+- name: Import wumbo sql file
+  shell: mysql -h{{DB_HOST}} -u{{DB_USER}} -p{{DB_PASS}} {{DB_NAME}} < wumbo.sql && touch {{ project_root }}/migrations/.base-sql-imported
+  args:
+    creates: "{{ project_root }}/migrations/.base-sql-imported"
+    chdir: "{{ project_root }}"
+- name: run migrations
+  shell: DB_HOST={{DB_HOST}} DB_USER={{DB_USER}} DB_PASS={{DB_PASS}} DB_NAME={{DB_NAME}} doctrine-migrations migrations:migrate --no-interaction
+  args:
+    chdir: "{{ project_root }}/migrations"
+  ignore_errors: True
+
