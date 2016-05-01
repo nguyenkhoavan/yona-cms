@@ -18,7 +18,7 @@ class Page extends Model
     protected $translateModel = 'Page\Model\Translate\PageTranslate'; // translate
 
     private $id;
-    private $slug;
+    private $slug; // translate
     private $title; // translate
     private $cover_photo; // translate
     private $thumbnail_photo; // translate
@@ -31,7 +31,7 @@ class Page extends Model
 
     public function initialize()
     {
-        $this->hasMany("id", $this->translateModel, "foreign_id"); // translate
+        $this->hasMany('id', $this->translateModel, 'foreign_id', ['alias'=>'translates']); // translate
     }
 
     public function beforeCreate()
@@ -46,9 +46,6 @@ class Page extends Model
 
     public function updateFields($data)
     {
-        if (!$this->getSlug()) {
-            $this->setSlug(Transliterator::slugify($data['title']));
-        }
         if (!$this->getMeta_title()) {
             $this->setMeta_title($data['title']);
         }
@@ -68,7 +65,12 @@ class Page extends Model
 
     public static function findCachedBySlug($slug)
     {
-        $query = "slug = '$slug'";
+        $pt = \Page\Model\Translate\PageTranslate::findFirst([
+            'conditions' =>'key="slug" AND value= ?0 AND lang=?1',
+            'bind' => [0 => $slug, 1=>LANG]
+        ]);
+
+        $query = "id = '$pt->foreign_id'";
         $key = HOST_HASH . md5("Page::findFirst($query)");
         $page = self::findFirst(array($query, 'cache' => array('key' => $key, 'lifetime' => 60)));
         return $page;
@@ -154,20 +156,14 @@ class Page extends Model
         return $this->getMLVariable('meta_title');
     }
 
-    /**
-     * @param mixed $slug
-     */
     public function setSlug($slug)
     {
-        $this->slug = $slug;
+        $this->setMLVariable('slug', $slug);
     }
 
-    /**
-     * @return mixed
-     */
     public function getSlug()
     {
-        return $this->slug;
+        return $this->getMLVariable('slug');
     }
 
     /**

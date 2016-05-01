@@ -1,18 +1,18 @@
 <!--controls-->
-<div class="ui segment">
+<div class="well well-sm">
 
-    <a href="{{ url.get() }}publication/admin?lang={{ constant('LANG') }}" class="ui button">
-        <i class="icon left arrow"></i> Manage Publications
+    <a href="{{ url.get() }}publication/admin?lang={{ constant('LANG') }}" class="btn btn-info">
+        <i class="fa fa-arrow-left"></i> Manage Publications
     </a>
 
-    <a href="{{ url.get() }}publication/type/add" class="ui button positive">
-        <i class="icon plus"></i> Add New
+    <a href="{{ url.get() }}publication/type/add" class="btn btn-primary">
+        <i class="fa fa-plus"></i> Add New
     </a>
 
 </div>
 <!--/end controls-->
 
-<table class="ui table very compact celled">
+<table class="table table-hover table-bordered table-striped very compact celled">
     <thead>
     <tr>
         <th style="width: 100px"></th>

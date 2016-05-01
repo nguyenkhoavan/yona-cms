@@ -8,7 +8,6 @@
 
 namespace Publication;
 
-use Publication\Model\Publication;
 use Publication\Model\Type;
 
 class Routes
@@ -19,19 +18,19 @@ class Routes
         $types_keys = array_keys(Type::types());
         $types_regex = '(' . implode('|', $types_keys) . ')';
 
-        $router->add('/publication/admin', array(
+        $router->add('/admin/publication', array(
             'module' => 'publication',
             'controller' => 'admin',
             'action' => 'index'
         ))->setName('publications_admin_all');
 
-        $router->add('/publication/admin/{type:' . $types_regex . '}', array(
-            'module' => 'publication',
-            'controller' => 'admin',
-            'action' => 'index'
+        $router->add('/admin/publication/{type:' . $types_regex . '}', array(
+            'module'        => 'publication',
+            'controller'    => 'admin',
+            'action'        => 'index'
         ))->setName('publications_admin');
 
-        $router->add('/publication/admin/{type:' . $types_regex . '}/([a-zA-Z0-9_]+)', array(
+        $router->add('/admin/publication/{type:' . $types_regex . '}/([a-zA-Z0-9_]+)', array(
             'module' => 'publication',
             'controller' => 'admin',
             'action' => 2

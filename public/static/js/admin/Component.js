@@ -53,7 +53,7 @@ var Component = function(){
 
         $("[data-widget='datepicker']").bootstrapDP({
             locale: 'en',
-            format: DATE_FORMAT[LANG],
+            format: (DATE_FORMAT[LANG]).toLowerCase(),
             showClose: true,
             debug: ENVIRONMENT == 'development'? true: false
         });

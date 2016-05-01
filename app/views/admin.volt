@@ -25,7 +25,7 @@
     <script>
         var ENVIRONMENT = "{{ constant('APPLICATION_ENV') }}";
         var LANG = "{{ constant('LANG') }}";
-        var DATE_FORMAT = {vi: 'dd/mm/YYYY', en: 'mm/dd/yyyy'}; // Using in momentjs
+        var DATE_FORMAT = {vi: 'DD/MM/YYYY', en: 'MM/DD/YYYY'}; // Using in momentjs
     </script>
 </head>
 <body>

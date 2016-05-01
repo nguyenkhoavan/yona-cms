@@ -18,9 +18,9 @@ class Model extends \Phalcon\Mvc\Model
     public $translations = [];
     public $fields = [];
 
-    public static $lang = 'vi'; // Language default
+    public static $lang = 'en'; // Language default
     public static $custom_lang = ''; // Used to create a sitemap
-    private static $translateCache = false; // Translation cache usage flag
+    private static $translateCache = true; // Translation cache usage flag
 
     /**
      * Translate. In order to implement a multilingual scheme, you need to copy your model of the following methods:
@@ -92,7 +92,7 @@ class Model extends \Phalcon\Mvc\Model
     }
 
     /**
-     * Извлечение единичного перевода по имени переменной
+     * Extracting money transfers on behalf of a variable
      */
     public function getMLVariable($key)
     {
@@ -103,8 +103,7 @@ class Model extends \Phalcon\Mvc\Model
 
         if(!$r){
             $defaultLang = Language::findFirstByPrimary(1);
-            $this->setLang($defaultLang->getIso());
-            $this->initTranslationsArray();
+            $this->initTranslationsArray($defaultLang->getIso());
             $this->initTranslations();
             if (array_key_exists($key, $this->translations)) {
                 $r = $this->translations[$key];
@@ -143,12 +142,15 @@ class Model extends \Phalcon\Mvc\Model
         $entity->save();
     }
 
-    public function translateCacheKey()
+    public function translateCacheKey($lang=null)
     {
+        if(!$lang){
+            $lang = self::$lang;
+        }
         if (!$this->getId()) {
             return false;
         }
-        $query = 'foreign_id = ' . $this->getId() . ' AND lang = "' . self::$lang . '"';
+        $query = 'foreign_id = ' . $this->getId() . ' AND lang = "' . $lang . '"';
         $key = HOST_HASH . md5($this->getSource() . '_translate ' . $query);
         return $key;
     }
@@ -165,22 +167,26 @@ class Model extends \Phalcon\Mvc\Model
     /**
      * Removing the transfer array
      */
-    private function initTranslationsArray()
+    private function initTranslationsArray($lang=null)
     {
+        if(!$lang){
+            $lang = self::$lang;
+        }
+
         if (!$this->getId()) {
             return false;
         }
         $model = new $this->translateModel();
-        $query = 'foreign_id = ' . $this->getId() . ' AND lang = "' . self::$lang . '"';
+        $query = 'foreign_id = ' . $this->getId() . ' AND lang = "' . $lang . '"';
         $params = ['conditions' => $query];
 
         if (self::$translateCache) {
             $cache = $this->getDi()->get('cache');
-            $data = $cache->get($this->translateCacheKey());
+            $data = $cache->get($this->translateCacheKey($lang));
             if (!$data) {
                 $data = $model->find($params);
                 if ($data) {
-                    $cache->save($this->translateCacheKey(), $data, self::CACHE_LIFETIME);
+                    $cache->save($this->translateCacheKey($lang), $data, self::CACHE_LIFETIME);
                 }
             }
         } else {

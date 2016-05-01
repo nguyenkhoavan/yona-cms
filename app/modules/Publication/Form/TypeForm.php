@@ -18,7 +18,7 @@ class TypeForm extends Form
 
     public function initialize()
     {
-        $this->add((new Text('title', array('required' => true)))->setLabel('Title'));
+        $this->add((new Text('title', array('required' => true, 'data-url' => $this->url->get(['for' => 'generate-slug']))))->setLabel('Title'));
         $this->add((new Text('slug', array('required' => true, 'data-description' => 'For example: articles')))->setLabel('URL'));
         $this->add((new Text('head_title'))->setLabel('Head Title'));
         $this->add((new Text('meta_description'))->setLabel('Meta-description'));

@@ -8,6 +8,7 @@ namespace Application\Mvc\Helper;
 
 use Cms\Model\Language;
 use Phalcon\Mvc\User\Component;
+use Application\Mvc\Helper\ArrayHelper;
 
 class LangSwitcher extends Component
 {
@@ -15,23 +16,6 @@ class LangSwitcher extends Component
     public function render($lang, $string)
     {
         $router = $this->getDI()->get('router');
-//        echo "<pre>";
-//        print_r('Namespace: '.$router->getNamespaceName());
-//        echo "</pre>";
-//        echo "<pre>";
-//        print_r('getModuleName: '.$router->getModuleName());
-//        echo "</pre>";
-//        echo "<pre>";
-//        print_r('getControllerName: '.$router->getControllerName());
-//        echo "</pre>";
-//        echo "<pre>";
-//        print_r('getActionName: '.$router->getActionName());
-//        echo "</pre>";
-//        echo "<pre>";
-//        print_r('RgetParams: ');
-//        print_r($router->getParams());
-//        echo "</pre>";
-//        exit;
         $view = $this->getDI()->get('view');
         $url = $this->getDI()->get('url');
         $requestQuery = new RequestQuery();
@@ -47,7 +31,7 @@ class LangSwitcher extends Component
                 $url_args = array();
                 $url_args['for'] = $route_name_changed;
 
-                $route_params = $router->getParams();
+                $route_params = $this->calRouterParams($lang, $router);
                 if ($route_params) {
                     foreach ($route_params as $param_key => $param_val) {
                         $url_args[$param_key] = $param_val;
@@ -65,13 +49,12 @@ class LangSwitcher extends Component
         }
 
         if ($lang == LANG) {
-//            $html = '<span>' . $string . '</span>';
             $html = '';
         } elseif ($view->disabledLang == $lang) {
 //            $html = '<span class="disabled">' . $string . '</span>';
             $html = '';
         } else {
-            $html = '<a class="btn btn-language" href="' . $href . '">' . $string . '</a>';
+            $html = '<a class="btn btn-language noajax" href="' . $href . '">' . $string . '</a>';
         }
 
         return $html;
@@ -89,4 +72,22 @@ class LangSwitcher extends Component
         return $route_name . '_' . $lang;
     }
 
+    private function calRouterParams($lang, $router){
+        $routerParams = $router->getParams();
+        $moduleName = $router->getModuleName();
+        if($moduleName == 'index') return $routerParams;
+        if(!isset($routerParams['slug'])) return $routerParams;
+
+        $namespace = ucfirst($moduleName).'\\Model\\'.ucfirst($moduleName);
+        $model = $namespace::findCachedBySlug($routerParams['slug']);
+        $allSlugs = $model->getTranslates(['conditions'=>'key="slug"'])->toArray();
+        $allSlugs = ArrayHelper::map($allSlugs, 'lang', 'value');
+
+        $slug = '';
+        if(isset($allSlugs[$lang])){
+            $slug = $allSlugs[$lang];
+        }
+        $routerParams['slug'] = $slug;
+        return $routerParams;
+    }
 } 

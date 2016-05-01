@@ -58,7 +58,7 @@ class Publication extends Model
             )
         );
 
-        $this->hasMany('id', $this->translateModel, 'foreign_id'); // translate
+        $this->hasMany('id', $this->translateModel, 'foreign_id', ['alias'=>'translates']); // translate
 
         $this->belongsTo('type_id', 'Publication\Model\Type', 'id', [
             'alias' => 'type'
@@ -110,7 +110,11 @@ class Publication extends Model
 
     public static function findCachedBySlug($slug)
     {
-        $publication = self::findFirst(["slug = '$slug'",
+        $pt = \Publication\Model\Translate\PublicationTranslate::findFirst([
+            'conditions' =>'key="slug" AND value= ?0 AND lang=?1',
+            'bind' => [0 => $slug, 1=>LANG]
+        ]);
+        $publication = self::findFirst(["id = '$pt->foreign_id'",
             'cache' => [
                 'key'      => self::cacheSlugKey($slug),
                 'lifetime' => 60]

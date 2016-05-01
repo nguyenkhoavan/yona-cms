@@ -1,6 +1,6 @@
 <!--controls-->
 <div class="well well-sm">
-    <a href="{{ url.get() }}page/admin/add" class="btn btn-primary">
+    <a href="{{ url.get(['for': 'add-page']) }}?lang={{ constant('LANG') }}" class="btn btn-primary">
         <i class="fa fa-plus"></i> Add New
     </a>
 </div>

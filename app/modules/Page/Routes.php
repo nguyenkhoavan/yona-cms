@@ -15,12 +15,6 @@ class Routes
 
     public function init(DefaultRouter $router)
     {
-        $router->add('/admin/generate-slug', array(
-            'module'        => 'page',
-            'controller'    => 'admin',
-            'action'        => 'generateSlug'
-        ))->setName('generate-slug');
-
         $router->addML('/{slug:[a-zA-Z0-9_-]+}.html', array(
             'module' => 'page',
             'controller' => 'index',
@@ -46,6 +40,12 @@ class Routes
             'action'     => 'edit',
         ))->setName('edit-page');
 
+        $router->add('/admin/page/add', array(
+            'module'     => 'page',
+            'controller' => 'admin',
+            'action'     => 'add',
+        ))->setName('add-page');
+
         $router->add('/admin/page/{id:(\d+)}/delete', array(
             'module'     => 'page',
             'controller' => 'admin',
@@ -58,11 +58,11 @@ class Routes
             'action'        => 'index'
         ))->setName('page-layout');
 
-        $router->add('/page/admin/generateSlug', array(
+        $router->add('/admin/generate-slug', array(
             'module'        => 'page',
             'controller'    => 'admin',
             'action'        => 'generateSlug'
-        ))->setName('page-generate-slug');
+        ))->setName('generate-slug');
 
         return $router;
 
