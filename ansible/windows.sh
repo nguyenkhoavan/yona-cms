@@ -43,7 +43,7 @@ if [ ! -f /usr/bin/ansible ]; then
 
   echo "Installing required python modules."
   pip install paramiko pyyaml jinja2 markupsafe
-
+s
   echo "Installing Ansible."
   pip install ansible
 fi
