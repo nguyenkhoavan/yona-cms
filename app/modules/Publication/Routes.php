@@ -30,12 +30,6 @@ class Routes
             'action'        => 'index'
         ))->setName('publications_admin');
 
-        $router->add('/admin/publication/{type:' . $types_regex . '}/([a-zA-Z0-9_]+)', array(
-            'module' => 'publication',
-            'controller' => 'admin',
-            'action' => 2
-        ))->setName('publications_admin_action');
-
         $router->add('/admin/publication/{id:(\d+)}/delete', array(
             'module'     => 'publication',
             'controller' => 'admin',
