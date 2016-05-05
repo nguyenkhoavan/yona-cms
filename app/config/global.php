@@ -58,7 +58,7 @@ return [
             'static/js/rotation.js',
             // just comment two lines below if you don't need pages transitions via AJAX
             'vendor/history/native.history.js',
-            'static/js/ajax.js',
+//            'static/js/ajax.js',
             'bower_components/bxslider-4/dist/jquery.bxslider.min.js',
             'bower_components/jquery-slimscroll/jquery.slimscroll.min.js',
             'bower_components/icheck/icheck.min.js',
