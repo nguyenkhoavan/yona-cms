@@ -5,11 +5,11 @@
 
 {% set languages = helper.languages() %}
 {% if languages|length > 1 %}
-    <div class="languages">
+    <ul class="languages nav navbar-nav navbar-right">
         {% for language in languages %}
-            <div class="lang">
+            <li class="lang">
                 {{ helper.langSwitcher(language['iso'], language['short_name']|upper) }}
-            </div>
+            </li>
         {% endfor %}
-    </div>
+    </ul>
 {% endif %}

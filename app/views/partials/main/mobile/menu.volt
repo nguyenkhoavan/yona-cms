@@ -17,19 +17,12 @@
 <div class="container">
     <div class="row">
         <div class="navbar navbar-default">
-            <div class="row">
-                <div class="col-xs-10">
-                    {{ partial('main/_partials/search') }}
-                </div>
-                <div class="col-xs-2">
-                    <div class="navbar-header pull-right">
-                        <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                        </button>
-                    </div>
-                </div>
+            <div class="navbar-header pull-right">
+                <button type="button" data-toggle="collapse" data-target=".navbar-collapse" class="navbar-toggle">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
             </div>
             <div class="row">
                 <div class="col-xs-12">

@@ -49,12 +49,11 @@ class LangSwitcher extends Component
         }
 
         if ($lang == LANG) {
-            $html = '';
+            $html = '<a class="btn btn-language noajax disabled" href="javascript:;"><i class="icons-ciss icon-flag-'.$lang.'"></i></a>';
         } elseif ($view->disabledLang == $lang) {
-//            $html = '<span class="disabled">' . $string . '</span>';
-            $html = '';
+            $html = '<a class="btn btn-language noajax disabled" href="javascript:;"><i class="icons-ciss icon-flag-'.$lang.'"></i></a>';
         } else {
-            $html = '<a class="btn btn-language noajax" href="' . $href . '">' . $string . '</a>';
+            $html = '<a class="btn btn-language noajax" href="' . $href . '"><i class="icons-ciss icon-flag-'.$lang.'"></i></a>';
         }
 
         return $html;

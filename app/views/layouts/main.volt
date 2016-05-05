@@ -1,13 +1,28 @@
-<header class="head-section">
-  {{ partial('main/header') }}
-</header>
+<nav class="navbar navbar-default">
+  <div id="header">
+    <div class="container">
+      <div class="row">
+        {{ partial('main/header') }}
+      </div>
+    </div>
+  </div>
 
-<div class="main-menu">
-  {{ partial('main/menu') }}
-</div>
+  <div id="menu">
+      {{ partial('main/menu') }}
+  </div>
+</nav>
+
 
 <!-- main content -->
-{{ content() }}
+<main>
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
+        {{ content() }}
+      </div>
+    </div>
+  </div>
+</main>
 <!-- end of content -->
 
 {% if seo_text is defined and seo_text_inner is not defined %}

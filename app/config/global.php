@@ -71,7 +71,7 @@ return [
         'css' => [
             'static/css/main.bootstrap/main.bootstrap.min.css',
             'static/css/animate.css',
-            'static/icons/icons.css',
+            'static/css/icons/icons.css',
             'static/css/fonts.css',
             'bower_components/bxslider-4/dist/jquery.bxslider.min.css',
             'bower_components/icheck/skins/flat/red.css',
